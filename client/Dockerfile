@@ -17,8 +17,8 @@ FROM nginx:alpine
 # Copy the built React app from the build stage to Nginx's web directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Optional: Add a custom Nginx configuration if you use React Router
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy a custom Nginx configuration to support React routing and API proxying
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
