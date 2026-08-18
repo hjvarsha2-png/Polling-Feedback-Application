@@ -23,7 +23,7 @@ services:
     environment:
       - PORT=5000
       - MONGODB_URI=mongodb://mongodb:27017/pollapp
-      # Ensure other required env variables are here (e.g. JWT_SECRET)
+      - JWT_SECRET=${JWT_SECRET:-default_secret_key_change_me_in_prod}
     depends_on:
       - mongodb
     networks:

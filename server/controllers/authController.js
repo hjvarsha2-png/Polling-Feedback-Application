@@ -1,8 +1,10 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key_change_me_in_prod';
+
 exports.signup = async (req, res) => {
-    console.log('JWT_SECRET loaded:', !!process.env.JWT_SECRET);
+    console.log('JWT_SECRET loaded:', !!JWT_SECRET);
     try {
         const { username, email, password } = req.body;
         let user = await User.findOne({ email });
@@ -12,7 +14,7 @@ exports.signup = async (req, res) => {
         await user.save();
 
         const payload = { user: { id: user.id } };
-        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+        jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
             if (err) throw err;
             res.json({ token });
         });
@@ -32,7 +34,7 @@ exports.login = async (req, res) => {
         if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
         const payload = { user: { id: user.id } };
-        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+        jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
             if (err) throw err;
             res.json({ token });
         });

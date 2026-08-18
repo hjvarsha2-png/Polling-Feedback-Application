@@ -9,7 +9,8 @@ const optionalAuth = (req, res, next) => {
     if (!token) return next();
     try {
         const jwt = require('jsonwebtoken');
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key_change_me_in_prod';
+        const decoded = jwt.verify(token, JWT_SECRET);
         req.user = decoded.user;
         next();
     } catch (err) {
